@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joyeux anniversaire 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --beige: #f3e9dc;
+    --beige-fonce: #dccbb5;
+    --rose: #d4a5a5;        /* rose poudré, doux */
+    --grenat: #7b2d3b;      /* accent principal */
+    --marron: #5a3a31;      /* texte */
+    --or: #c9a66b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    font-family: 'Quicksand', sans-serif;
+    color: var(--marron);
+    
+    background: url('photo.jpg') center / cover no-repeat fixed, var(--beige);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  /* ---------- Mode nuit (avant de souffler la bougie) ---------- */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: #0b0606;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.8s ease;
+    z-index: 1;
+  }
+  body.nuit::before { opacity: 1; }
+
+  .card {
+    position: relative;
+    z-index: 2;
+    background: rgba(255,250,244,.45);
+    border: 1px solid rgba(255,255,255,.6);
+    border-radius: 28px;
+    padding: 40px 28px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(90,58,49,.3);
+    transition: background 1.8s, border-color 1.8s, box-shadow 1.8s;
+  }
+  body.nuit .card {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.2rem, 8vw, 3.2rem);
+    color: var(--grenat);
+    line-height: 1.1;
+    transition: opacity 1.8s;
+  }
+  .nom { display: block; margin-top: 6px; }
+  .sous-titre { margin-top: 12px; font-size: .95rem; opacity: .85; transition: opacity 1.8s; }
+
+  /* Tout disparaît dans le noir, sauf la flamme */
+  body.nuit h1,
+  body.nuit .sous-titre,
+  body.nuit .etage1,
+  body.nuit .etage2 { opacity: 0; }
+
+  /* ---------- Gâteau ---------- */
+  .gateau {
+    margin: 34px auto 10px;
+    width: 160px;
+    cursor: pointer;
+    position: relative;
+  }
+  body.nuit .gateau { margin-top: 140px; }
+  .gateau { transition: margin .1s; }
+
+  .bougie {
+    position: relative;
+    width: 8px; height: 34px;
+    background: var(--or);
+    margin: 0 auto;
+    border-radius: 3px;
+  }
+  .flamme {
+    position: absolute;
+    top: -22px; left: 50%;
+    width: 14px; height: 22px;
+    background: radial-gradient(circle at 50% 70%, #fff3b0, #ffb347);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    transform: translateX(-50%);
+    transform-origin: bottom center;
+    animation: vacille .35s infinite alternate ease-in-out;
+    box-shadow: 0 0 25px 8px rgba(255,180,90,.65);
+    transition: opacity .5s;
+  }
+  body.nuit .flamme { box-shadow: 0 0 50px 18px rgba(255,170,80,.55); }
+  @keyframes vacille {
+    from { transform: translateX(-50%) rotate(-4deg) scaleY(1); }
+    to   { transform: translateX(-50%) rotate(4deg) scaleY(1.08); }
+  }
+  .eteinte .flamme { opacity: 0; animation: none; }
+
+  .etage1 {
+    height: 38px; background: var(--rose);
+    border-radius: 12px 12px 0 0;
+    border-bottom: 5px solid var(--grenat);
+    transition: opacity 1.8s;
+  }
+  .etage2 {
+    height: 44px; background: var(--marron);
+    border-radius: 0 0 14px 14px;
+    width: 130%; margin-left: -15%;
+    transition: opacity 1.8s;
+  }
+  .indice {
+    margin-top: 12px; font-size: .85rem; opacity: .8;
+    transition: color 1.8s;
+  }
+  body.nuit .indice { color: var(--or); opacity: .7; }
+
+  /* ---------- Lettre ---------- */
+  .lettre {
+    margin-top: 26px;
+    background:#f3e9dc96 ;
+    border-radius: 18px;
+    padding: 0 20px;
+    text-align: left;
+    line-height: 1.7;
+    box-shadow: inset 0 0 0 2px var(--beige-fonce);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 1s ease, opacity 1s ease, padding .6s ease;
+  }
+  .lettre.ouverte {
+    max-height: 700px;
+    opacity: 1;
+    padding: 24px 20px;
+  }
+  .lettre p { margin-bottom: 12px; }
+  .signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem;
+    color: var(--grenat);
+    text-align: right;
+    margin-top: 8px;
+  }
+
+  #btnCoeurs {
+    margin-top: 20px;
+    font-family: inherit;
+    font-size: .95rem;
+    border: none;
+    background: var(--grenat);
+    color: #fff;
+    padding: 12px 26px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform .2s, background .2s;
+    display: none;
+  }
+  #btnCoeurs:hover { transform: scale(1.05); background: #5f2230; }
+  #btnCoeurs.visible { display: inline-block; }
+
+  /* ---------- Bouton musique ---------- */
+  #btnMusique {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 20;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,166,107,.6);
+    background: rgba(20,10,10,.55);
+    color: var(--or);
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  /* ---------- Confettis / coeurs ---------- */
+  .confetti {
+    position: fixed;
+    top: -20px;
+    pointer-events: none;
+    z-index: 10;
+    animation: chute linear forwards;
+  }
+  @keyframes chute {
+    to { transform: translateY(110vh) rotate(540deg); opacity: .8; }
+  }
+</style>
+</head>
+<body class="nuit">
+
+  <!-- 👉 Mets ta musique dans le même dossier et nomme-la musique.mp3 -->
+  <audio id="musique" src="musique.mp3" loop preload="auto"></audio>
+  <button id="btnMusique" aria-label="Musique">🎵</button>
+
+  <main class="card">
+    <h1>Joyeux anniversaire <span class="nom">CHAHINEEEEEZ 🤍</span></h1>
+    <p class="sous-titre">J'ai préparé quelque chose pour toi…</p>
+
+    <div class="gateau" id="gateau">
+      <div class="bougie"><div class="flamme"></div></div>
+      <div class="etage1"></div>
+      <div class="etage2"></div>
+    </div>
+    <p class="indice" id="indice">Fais un vœu, puis souffle la flamme en cliquant dessus 🕯️</p>
+
+    <section class="lettre" id="lettre">
+      <p>Ma chère CHAHINEZ,</p>
+      <p>Tu me connais mane3ref ne3eber mais à l'aide ta3bir n chatGPT ( and i really mean it ):  je voulais te dire à quel point je suis heureuse de t'avoir dans ma vie. les moments partagés et ton soutien dans les jours moins faciles. inchallah anemlil le plus tot possible </p>
+      <p>Je te souhaite une année pleine  de réussite et de belles surprises. Tu mérites tout le bonheur du monde.</p>
+      <p>Love uuuuuu 🌹</p>
+      <p class="signature">— Nassira </p>
+    </section>
+
+    <button id="btnCoeurs">Encore des câlins 🤎</button>
+  </main>
+
+<script>
+  const gateau = document.getElementById('gateau');
+  const lettre = document.getElementById('lettre');
+  const indice = document.getElementById('indice');
+  const btn = document.getElementById('btnCoeurs');
+  const musique = document.getElementById('musique');
+  const btnMusique = document.getElementById('btnMusique');
+
+  const couleurs = ['#7b2d3b', '#d4a5a5', '#f3e9dc', '#c9a66b', '#5a3a31'];
+  const symboles = ['🤍', '🌹', '✨', '🤎'];
+
+  function lancerConfettis(n = 60) {
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti';
+      if (Math.random() < 0.35) {
+        el.textContent = symboles[Math.floor(Math.random() * symboles.length)];
+        el.style.fontSize = (14 + Math.random() * 16) + 'px';
+      } else {
+        el.style.width = '10px';
+        el.style.height = '14px';
+        el.style.background = couleurs[Math.floor(Math.random() * couleurs.length)];
+        el.style.borderRadius = '2px';
+      }
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+      el.style.animationDelay = (Math.random() * 0.8) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 6500);
+    }
+  }
+
+  function lancerMusique() {
+    musique.play().then(() => { btnMusique.textContent = '🎵'; }).catch(() => {});
+  }
+
+  // Bouton musique : lecture / pause
+  btnMusique.addEventListener('click', () => {
+    if (musique.paused) {
+      lancerMusique();
+    } else {
+      musique.pause();
+      btnMusique.textContent = '🔇';
+    }
+  });
+
+  // Clic sur la flamme : on souffle, la lumière revient
+  gateau.addEventListener('click', () => {
+    if (gateau.classList.contains('eteinte')) return;
+    gateau.classList.add('eteinte');
+    document.body.classList.remove('nuit');
+    indice.textContent = 'Ton vœu va se réaliser, j\'en suis sûre ✨';
+    lancerMusique();
+    lancerConfettis();
+    setTimeout(() => {
+      lettre.classList.add('ouverte');
+      btn.classList.add('visible');
+    }, 1200);
+  });
+
+  btn.addEventListener('click', () => lancerConfettis(40));
+</script>
+</body>
+</html>
